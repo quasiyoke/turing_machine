@@ -1,4 +1,4 @@
-# Yet another turing machine
+# Yet another Turing machine
 
 Compiles using GCC:
 ```
