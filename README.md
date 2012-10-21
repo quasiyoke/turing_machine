@@ -15,13 +15,13 @@ Where options are:
 * ```-n``` How much cycles will machine do.
 * ```-o``` Start tape offset. 0 (zero) by default.
 * ```-s``` Initial state. 0 (zero) by default.
-* ```-t``` Initial tape content. Use . (dot) for spaces. Spaces only by default.
+* ```-t``` Initial tape content. Use . (dot) for spaces. Tape will be read from stdin if not specified.
 * ```-v``` Verbose mode.
 
 ## Examples
 Runs rotating animation:
 ```
-$ bin/turing_machine -f tables/animation -n100 -v
+$ bin/turing_machine -f tables/animation -n100 -t. -v
 ```
 
 Runs copying algorithm:

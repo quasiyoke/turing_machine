@@ -32,6 +32,8 @@ void Iterate(Machine*, int, int);
 
 int ReadTable(const char*, Action**);
 
+void ReadTape(TapeSign*, FILE*);
+
 void ShowState(const Machine*, int);
 
 

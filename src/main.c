@@ -18,6 +18,7 @@ int main(int argc, char** argv) {
   char* file_path = NULL;
   int iterations_count = 0;
   Machine* pMachine = CreateMachine();
+  char* tape_content = NULL;
 
   int c;
   opterr = 0;
@@ -41,7 +42,7 @@ int main(int argc, char** argv) {
       pMachine->state = atoi(optarg);
       break;
     case 't':
-      FillTape(pMachine->tape, optarg);
+      tape_content = optarg;
       break;
     case 'v':
       verbose = 1;
@@ -51,9 +52,16 @@ int main(int argc, char** argv) {
       break;
     }
   }
+
   if(show_help || errno || optopt || file_path == NULL || iterations_count <= 0){
     ShowHelp();
   }else{
+    if(tape_content == NULL){
+      ReadTape(pMachine->tape, stdin);
+    }else{
+      FillTape(pMachine->tape, tape_content);
+    }
+  
     if(ReadTable(file_path, pMachine->table)){
       if (errno) {
         perror(file_path);

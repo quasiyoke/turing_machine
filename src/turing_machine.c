@@ -136,6 +136,13 @@ int ReadTable(const char* file_path, Action** table) {
   return code;
 }
 
+void ReadTape(TapeSign* tape, FILE* f){
+  char c;
+  for(int i=0; i<kTapeLength && (c=fgetc(f))!=EOF; i++){
+    tape[i] = c;
+  }
+}
+
 void ShowState(const Machine* pMachine, int verbose) {
   if(verbose){
     printf("%3d, %02d: ", pMachine->step, pMachine->state);
