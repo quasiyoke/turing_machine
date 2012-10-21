@@ -11,14 +11,20 @@ TDIR=tests
 
 all: $(EXECUTABLE)
 
-$(ODIR)/main.o: src/main.c
-	$(CC) -c $(CFLAGS) -o $@ $^
-
-$(ODIR)/turing_machine.o: src/turing_machine.c
-	$(CC) -c $(CFLAGS) -o $@ $^
-
-$(EXECUTABLE): $(ODIR)/main.o $(ODIR)/turing_machine.o
+$(EXECUTABLE): $(ODIR)/main.o $(ODIR)/turing_machine.o | $(BDIR)/
 	$(CC) -o $@ $^ $(LFLAGS)
 
+$(ODIR)/main.o: src/main.c | $(ODIR)/
+	$(CC) -c $(CFLAGS) -o $@ $^
+
+$(ODIR)/turing_machine.o: src/turing_machine.c | $(ODIR)/
+	$(CC) -c $(CFLAGS) -o $@ $^
+
+$(BDIR)/:
+	mkdir -p $@
+
+$(ODIR)/:
+	mkdir -p $@
+
 clean:
-	rm -f $(ODIR)/*.o $(BDIR)/* $(TDIR)/*_result
+	rm -fr $(ODIR) $(BDIR) $(TDIR)/*_result
