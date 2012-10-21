@@ -1,6 +1,6 @@
 CC=gcc
 LFLAGS=-Wall
-CFLAGS=-x c -std=c99 -Wall
+CFLAGS=-x c -std=c99 -Wall -D_XOPEN_SOURCE
 
 ODIR=obj
 

@@ -24,13 +24,13 @@ int Act(Machine*);
 
 Machine* CreateMachine();
 
-void FillTape(TapeSign*, int, char**);
+void FillTape(TapeSign*, char*);
 
 void FreeMachine(Machine*);
 
 void Iterate(Machine*, int);
 
-void ReadTable(const char*, Action**);
+int ReadTable(const char*, Action**);
 
 void ShowState(const Machine*);
 

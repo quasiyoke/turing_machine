@@ -5,6 +5,7 @@
  *      Author: quasiyoke
  */
 
+#include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -75,20 +76,13 @@ Machine* CreateMachine() {
   return pMachine;
 }
 
-void FillTape(TapeSign* tape, int argc, char** argv) {
-  int j = 0;
-  for (int i = 0; i < argc && j < kTapeLength; i++) {
-    char* arg = argv[i];
-    while (j < kTapeLength && *arg) {
-      char c = *arg++;
-      if (c == '$' || c == '#' || c == '.') {
-        c = ' ';
-      }
-      tape[j++] = c;
+void FillTape(TapeSign* tape, char* arg) {
+  for (int j=0; j < kTapeLength && *arg; j++) {
+    char c = *arg++;
+    if (c == '$' || c == '#' || c == '.') {
+      c = ' ';
     }
-    if (i + 1 < argc && j < kTapeLength) {
-      tape[j++] = ' ';
-    }
+    tape[j] = c;
   }
 }
 
@@ -109,22 +103,28 @@ void Iterate(Machine* pMachine, int iterations_count) {
   } while (pMachine->step < iterations_count && Act(pMachine));
 }
 
-void ReadTable(const char* file_path, Action** table) {
+int ReadTable(const char* file_path, Action** table) {
   FILE* f = fopen(file_path, "r");
-  int state;
-  char sign;
-  Action action;
-  while (fscanf(f, "%d", &state) != EOF) {
-    fgetc(f);
-    sign = fgetc(f);
-    fgetc(f);
-    action.sign = fgetc(f);
-    fgetc(f);
-    fscanf(f, "%d", &action.state);
-    table[state][(int) sign] = action;
-    //printf("%d,%c,%c,%d\n", state, sign, action.sign, action.state);
+  int code = 1;
+  if(f == NULL){
+    code = 0;
+  }else{
+    int state;
+    char sign;
+    Action action;
+    while (fscanf(f, "%d", &state) != EOF) {
+      fgetc(f);
+      sign = fgetc(f);
+      fgetc(f);
+      action.sign = fgetc(f);
+      fgetc(f);
+      fscanf(f, "%d", &action.state);
+      table[state][(int) sign] = action;
+      //printf("%d,%c,%c,%d\n", state, sign, action.sign, action.state);
+    }
+    fclose(f);
   }
-  fclose(f);
+  return code;
 }
 
 void ShowState(const Machine* pMachine) {

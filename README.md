@@ -8,22 +8,27 @@ $ make
 ## Command-line arguments
 Program has the following arguments syntax:
 ```
-PATH_TO_ACTION_TABLE_FILE STATE OFFSET ITERATIONS_COUNT [INITIAL_TAPE_CONTENT]
+turing_machine -f ACTION_TABLE_FILE -n ITERATIONS_COUNT [OPTIONS]
 ```
-You may use ```.``` (dot) for defining spaces for tape.
+Where options are:
+* ```-f``` Path to action table file.
+* ```-n``` How much cycles will machine do.
+* ```-o``` Start tape offset. 0 (zero) by default.
+* ```-s``` Initial state. 0 (zero) by default.
+* ```-t``` Initial tape content. Use . (dot) for spaces. Spaces only by default.
 
 ## Examples
 Runs rotating animation:
 ```
-$ bin/turing_machine tables/animation 0 0 100
+$ bin/turing_machine -f tables/animation -n100
 ```
 
 Runs copying algorithm:
 ```
-$ bin/turing_machine tables/copying 0 10 100 .IIII
+$ bin/turing_machine -f tables/copying -n100 -o10 -t.IIII
 ```
 
 Runs conjunction of binary numbers:
 ```
-$ bin/turing_machine tables/conjunction 0 10 200 .1100.1010
+$ bin/turing_machine -f tables/conjunction -n200 -o10 -t.1100.1010
 ```
