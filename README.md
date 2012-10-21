@@ -16,19 +16,20 @@ Where options are:
 * ```-o``` Start tape offset. 0 (zero) by default.
 * ```-s``` Initial state. 0 (zero) by default.
 * ```-t``` Initial tape content. Use . (dot) for spaces. Spaces only by default.
+* ```-v``` Verbose mode.
 
 ## Examples
 Runs rotating animation:
 ```
-$ bin/turing_machine -f tables/animation -n100
+$ bin/turing_machine -f tables/animation -n100 -v
 ```
 
 Runs copying algorithm:
 ```
-$ bin/turing_machine -f tables/copying -n100 -o10 -t.IIII
+$ bin/turing_machine -f tables/copying -n100 -o10 -t.IIII -v
 ```
 
 Runs conjunction of binary numbers:
 ```
-$ bin/turing_machine -f tables/conjunction -n200 -o10 -t.1100.1010
+$ bin/turing_machine -f tables/conjunction -n200 -o10 -t.1100.1010 -v
 ```

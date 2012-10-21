@@ -10,7 +10,7 @@ const int kArgcMin = 5;
 
 
 void ShowHelp(){
-  puts("Usage: turing_machine -f ACTION_TABLE_FILE -n ITERATIONS_COUNT [OPTIONS]\n\n  -f\tPath to action table file.\n  -n\tHow much cycles will machine do.\n  -o\tStart tape offset.\n  -s\tInitial state.\n  -t\tInitial tape content. Use . (dot) for spaces.");
+  puts("Usage: turing_machine -f ACTION_TABLE_FILE -n ITERATIONS_COUNT [OPTIONS]\n\n  -f\tPath to action table file.\n  -n\tHow much cycles will machine do.\n  -o\tStart tape offset.\n  -s\tInitial state.\n  -t\tInitial tape content. Use . (dot) for spaces.\n  -v\tVerbose mode.");
 }
 
 
@@ -22,10 +22,14 @@ int main(int argc, char** argv) {
   int c;
   opterr = 0;
   int show_help = 0;
-  while((c = getopt(argc, argv, "f:hn:o::s::t::")) != -1){
+  int verbose = 0;
+  while((c = getopt(argc, argv, "f:hn:o::s::t::v")) != -1){
     switch(c){
     case 'f':
       file_path = optarg;
+      break;
+    case 'h':
+      show_help = 1;
       break;
     case 'n':
       iterations_count = atoi(optarg);
@@ -39,8 +43,8 @@ int main(int argc, char** argv) {
     case 't':
       FillTape(pMachine->tape, optarg);
       break;
-    case 'h':
-      show_help = 1;
+    case 'v':
+      verbose = 1;
       break;
     default:
       errno = 1;
@@ -54,7 +58,7 @@ int main(int argc, char** argv) {
       if (errno) {
         perror(file_path);
       } else {
-        Iterate(pMachine, iterations_count);
+        Iterate(pMachine, iterations_count, verbose);
       }
     }else{
       printf("File \"%s\" not found.\n", file_path);

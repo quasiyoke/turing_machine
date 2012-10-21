@@ -11,14 +11,16 @@
 
 #include "turing_machine.h"
 
-int Act(Machine* pMachine) {
+int Act(Machine* pMachine, int verbose) {
   pMachine->step++;
 
   Action* pAction =
     &pMachine->table[pMachine->state][(int) pMachine->tape[pMachine->offset]];
 
   if ((pMachine->state = pAction->state) == kNoState) {
-    puts("Not defined situation reached.");
+    if(verbose){
+      puts("Not defined situation reached.");
+    }
     return 0;
   }
 
@@ -27,7 +29,9 @@ int Act(Machine* pMachine) {
   case 'R':
   case '>':
     if (kTapeLength <= ++pMachine->offset) {
-      puts("End of tape reached.");
+      if(verbose){
+        puts("End of tape reached.");
+      }
       return 0;
     }
     break;
@@ -35,7 +39,9 @@ int Act(Machine* pMachine) {
   case 'L':
   case '<':
     if (--pMachine->offset < 0) {
-      puts("Beginning of tape reached.");
+      if(verbose){
+        puts("Beginning of tape reached.");
+      }
       return 0;
     }
     break;
@@ -49,13 +55,11 @@ int Act(Machine* pMachine) {
 
 Machine* CreateMachine() {
   Machine* pMachine = (Machine*) malloc(sizeof(Machine));
-  if ((pMachine->table = (Action**) malloc(kStatesCountMax * sizeof(Action*)))
-      == NULL ) {
+  if ((pMachine->table = (Action**) malloc(kStatesCountMax * sizeof(Action*))) == NULL ) {
     exit(EXIT_FAILURE);
   }
   for (int i = 0; i < kStatesCountMax; i++) {
-    if ((pMachine->table[i] = (Action*) malloc(kSignsRange * sizeof(Action)))
-        == NULL ) {
+    if ((pMachine->table[i] = (Action*) malloc(kSignsRange * sizeof(Action))) == NULL ) {
       exit(EXIT_FAILURE);
     }
     for (int j = 0; j < kSignsRange; j++) {
@@ -63,8 +67,7 @@ Machine* CreateMachine() {
     }
   }
 
-  if ((pMachine->tape = (TapeSign*) malloc(sizeof(TapeSign) * kTapeLength))
-      == NULL ) {
+  if ((pMachine->tape = (TapeSign*) malloc(sizeof(TapeSign) * kTapeLength)) == NULL ) {
     exit(EXIT_FAILURE);
   }
   for (int i = 0; i < kTapeLength; i++) {
@@ -97,10 +100,16 @@ void FreeMachine(Machine* pMachine) {
   free(pMachine);
 }
 
-void Iterate(Machine* pMachine, int iterations_count) {
-  do {
-    ShowState(pMachine);
-  } while (pMachine->step < iterations_count && Act(pMachine));
+void Iterate(Machine* pMachine, int iterations_count, int verbose) {
+  if(verbose){
+    do {
+      ShowState(pMachine, verbose);
+    } while (pMachine->step < iterations_count && Act(pMachine, verbose));
+  }else{
+    while(pMachine->step < iterations_count && Act(pMachine, verbose)){
+    }
+    ShowState(pMachine, verbose);
+  }
 }
 
 int ReadTable(const char* file_path, Action** table) {
@@ -127,17 +136,27 @@ int ReadTable(const char* file_path, Action** table) {
   return code;
 }
 
-void ShowState(const Machine* pMachine) {
-  printf("%3d, %02d: ", pMachine->step, pMachine->state);
-  for (int i = 0; i < kTapeLength; i++) {
-    putc(pMachine->tape[i], stdout);
-  }
-  puts("");
+void ShowState(const Machine* pMachine, int verbose) {
+  if(verbose){
+    printf("%3d, %02d: ", pMachine->step, pMachine->state);
+    for (int i = 0; i < kTapeLength; i++) {
+      putc(pMachine->tape[i], stdout);
+    }
+    puts("");
 
-  for (int i = 0; i < 9 + pMachine->offset; i++) {
-    printf(" ");
+    for (int i = 0; i < 9 + pMachine->offset; i++) {
+      printf(" ");
+    }
+    puts("^");
+  }else{
+    int j = kTapeLength;
+    while(pMachine->tape[j - 1] == ' '){
+      j--;
+    }
+    for (int i = 0; i < j; i++) {
+      putc(pMachine->tape[i], stdout);
+    }    
   }
-  puts("^");
 }
 
 

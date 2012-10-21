@@ -20,7 +20,7 @@ typedef struct {
 } Machine;
 
 
-int Act(Machine*);
+int Act(Machine*, int);
 
 Machine* CreateMachine();
 
@@ -28,11 +28,11 @@ void FillTape(TapeSign*, char*);
 
 void FreeMachine(Machine*);
 
-void Iterate(Machine*, int);
+void Iterate(Machine*, int, int);
 
 int ReadTable(const char*, Action**);
 
-void ShowState(const Machine*);
+void ShowState(const Machine*, int);
 
 
 const State kNoState;
