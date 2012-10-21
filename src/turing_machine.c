@@ -81,7 +81,7 @@ void FillTape(TapeSign* tape, int argc, char** argv) {
     char* arg = argv[i];
     while (j < kTapeLength && *arg) {
       char c = *arg++;
-      if (c == '$' || c == '#') {
+      if (c == '$' || c == '#' || c == '.') {
         c = ' ';
       }
       tape[j++] = c;
