@@ -7,6 +7,8 @@ ODIR=obj
 BDIR=bin
 EXECUTABLE=$(BDIR)/turing_machine
 
+TDIR=tests
+
 all: $(EXECUTABLE)
 
 $(ODIR)/main.o: src/main.c
@@ -19,4 +21,4 @@ $(EXECUTABLE): $(ODIR)/main.o $(ODIR)/turing_machine.o
 	$(CC) -o $@ $^ $(LFLAGS)
 
 clean:
-	rm -f $(ODIR)/*.o $(BDIR)/*
+	rm -f $(ODIR)/*.o $(BDIR)/* $(TDIR)/*_result
