@@ -7,7 +7,7 @@ show_error_and_exit(){
 
 tests_dir="tests"
 n=0
-for table in conjunction logical_conjunction
+for table in conjunction logical_conjunction subtraction
 do
     echo "$table testing"
     echo
@@ -17,7 +17,7 @@ do
         echo "Test:"
         cat ${test_file}
         echo
-        bin/turing_machine -f tables/${table} -n200 -o10 < ${test_file} > ${test_file}_result
+        bin/turing_machine -f tables/${table} -n400 -o10 < ${test_file} > ${test_file}_result
         echo "Result:"
         cat ${test_file}_result
         echo
